@@ -143,7 +143,20 @@ TArray<TSharedPtr<FJsonValue>> UFRM_Trains::getTrainStation(UObject* WorldContex
 		TArray<TSharedPtr<FJsonValue>> JCargoStations;
 
 		AFGBuildableRailroadStation* RailStation = TrainStation->GetStation();
-		TArray<AFGBuildableTrainPlatform*> TrainPlatforms = RailStation->mDockedPlatformList;
+
+		TArray<AFGBuildableTrainPlatform*> TrainPlatforms;
+
+		UFGTrainPlatformConnection* FirstConnection = RailStation->GetStationOutputConnection();
+		if (FirstConnection) {
+			// Platform connections have a 'direction' with a value that is either 0 or 1.
+			// The next platform can be found using the opposite value to what we started with.
+			uint8 ConnectionDirection = FirstConnection->GetComponentDirection() == 0 ? 1 : 0;
+			AFGBuildableTrainPlatform* ConnectedPlatform = FirstConnection->GetPlatformOwner();
+			while (ConnectedPlatform) {
+				TrainPlatforms.Add(ConnectedPlatform);
+				ConnectedPlatform = ConnectedPlatform->GetConnectedPlatformInDirectionOf(ConnectionDirection);
+			}
+		}
 
 		TArray<TSharedPtr<FJsonValue>> JTrainPlatformArray;
 

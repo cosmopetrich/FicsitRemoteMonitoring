@@ -12,6 +12,7 @@
 #include "FRM_Library.h"
 #include "FGLocomotive.h"
 #include "FGTrain.h"
+#include "FGTrainPlatformConnection.h"
 #include "FGTrainStationIdentifier.h"
 #include "FGLocomotiveMovementComponent.h"
 #include "FRM_Trains.generated.h"
