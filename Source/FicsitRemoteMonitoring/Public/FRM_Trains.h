@@ -33,4 +33,5 @@ private:
 	friend class AFGBuildableRailroadStation;
 	friend class AFGBuildableTrainPlatform;
 	friend class AFGBuildableTrainPlatformCargo;
+	friend class UFGTrainPlatformConnection;
 };
