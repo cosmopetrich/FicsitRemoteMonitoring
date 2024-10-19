@@ -151,9 +151,15 @@ TArray<TSharedPtr<FJsonValue>> UFRM_Trains::getTrainStation(UObject* WorldContex
 			// Platform connections have a 'direction' with a value that is either 0 or 1.
 			// The next platform can be found using the opposite value to what we started with.
 			uint8 ConnectionDirection = (PlatformConnection->mComponentDirection == 0) ? 1 : 0;
-			while (PlatformConnection) {
+			UE_LOGFMT(LogFRMDebug, Log, "Determined connection direction as {0}", ConnectionDirection);
+			while (PlatformConnection && PlatformConnection->IsConnected()) {
 				AFGBuildableTrainPlatform* ConnectedPlatform = PlatformConnection->platformOwner;
+				UE_LOGFMT(LogFRMDebug, Log, "Found platform with {0} connections", ConnectedPlatform->mPlatformConnections.Num());
 				TrainPlatforms.Add(ConnectedPlatform);
+				if (!ConnectedPlatform->mPlatformConnections.IsValidIndex(ConnectionDirection)) {
+					UE_LOGFMT(LogFRMDebug, Log, "No valid connection index - breaking");
+					break;
+				}
 				PlatformConnection = ConnectedPlatform->mPlatformConnections[ConnectionDirection];
 			}
 		}

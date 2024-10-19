@@ -15,6 +15,7 @@
 #include "FGTrainPlatformConnection.h"
 #include "FGTrainStationIdentifier.h"
 #include "FGLocomotiveMovementComponent.h"
+#include "Logging/StructuredLog.h"
 #include "FRM_Trains.generated.h"
  
 /**
