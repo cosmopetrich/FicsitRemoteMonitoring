@@ -151,16 +151,73 @@ TArray<TSharedPtr<FJsonValue>> UFRM_Trains::getTrainStation(UObject* WorldContex
 			// Platform connections have a 'direction' with a value that is either 0 or 1.
 			// The next platform can be found using the opposite value to what we started with.
 			uint8 ConnectionDirection = (PlatformConnection->mComponentDirection == 0) ? 1 : 0;
-			UE_LOGFMT(LogFRMDebug, Log, "Determined connection direction as {0}", ConnectionDirection);
-			while (PlatformConnection && PlatformConnection->IsConnected()) {
-				AFGBuildableTrainPlatform* ConnectedPlatform = PlatformConnection->platformOwner;
-				UE_LOGFMT(LogFRMDebug, Log, "Found platform with {0} connections", ConnectedPlatform->mPlatformConnections.Num());
-				TrainPlatforms.Add(ConnectedPlatform);
-				if (!ConnectedPlatform->mPlatformConnections.IsValidIndex(ConnectionDirection)) {
-					UE_LOGFMT(LogFRMDebug, Log, "No valid connection index - breaking");
+			while (PlatformConnection) {
+				/*
+				 * I am confuse. Most of the time I cannot access public functions. If I do, SF fails to load with the generic "operating system error".
+				 * This occurs even if the funciton is just a getter.
+				 * However, accessing the private field behidn the getter will work fine so long as I make it accessible to blueprint.
+				 * But some public function still work, e.g. getstationoutputconnection above, even though they are not tagged for reflection.
+				 * platformconnection->platformowner fails with a segfault even if I guard against platformconnection being false/null/nullptr and I've set up friends.
+				 * And then the mPlatfromConnections TArray sometimes shows up with a length of -1 ???. 
+				 * Another one that doesn't work is FGbuildabletrainplatform.GetConnectedPlatformInDirectionOf yet platformconnection->getplatformowner works fine  
+				 * The ones which work have the `class` keyword. Is that because they're masking something which is invisible because we don't have the full source? 
+				 * todo: maybe try making getconnectedplatformindirectionof callable just to see if it fails
+				 * Okay, it *does* fail, whereas 'Onrep_railroadtrack' *works* and *is* flagged for reflection. */
+				uint8 tempdir = PlatformConnection->mComponentDirection;
+				UE_LOGFMT(LogFRMDebug, Log, "FIRST CONNECTION WAS OKAY AND HAS DIR {0}", tempdir);
+				bool isConn = PlatformConnection->IsConnected();
+				UE_LOGFMT(LogFRMDebug, Log, "FIRST CONNECTION STATUS IS {0}", isConn);
+
+				PlatformConnection = PlatformConnection->mConnectedTo;
+				
+				if (PlatformConnection == NULL) {
+					UE_LOGFMT(LogFRMDebug, Log, "INVERSE CONNECTION WAS NULL");
 					break;
 				}
-				PlatformConnection = ConnectedPlatform->mPlatformConnections[ConnectionDirection];
+				if (PlatformConnection == nullptr) {
+					UE_LOGFMT(LogFRMDebug, Log, "INVERSE CONNECTION WAS A NULL POINTER");
+					break;
+				}
+				if (!PlatformConnection) {
+					UE_LOGFMT(LogFRMDebug, Log, "INVERSE CONNECTION WAS FALSY");
+					break;
+				}
+
+				tempdir = PlatformConnection->mComponentDirection;
+				UE_LOGFMT(LogFRMDebug, Log, "INVERSE CONNECTION WAS OKAY AND HAS DIR {0}", tempdir);
+				isConn = PlatformConnection->IsConnected();
+				UE_LOGFMT(LogFRMDebug, Log, "INVERSE CONNECTION STATUS IS {0}", isConn);
+				
+				//AFGBuildableTrainPlatform* ConnectedPlatform = PlatformConnection->platformOwner;
+				AFGBuildableTrainPlatform* ConnectedPlatform = PlatformConnection->GetPlatformOwner();
+				// https://forums.unrealengine.com/t/tarray-num-returning-negative-number-and-causing-crash/106308
+				TrainPlatforms.Add(ConnectedPlatform);
+				if (!ConnectedPlatform) {
+					UE_LOGFMT(LogFRMDebug, Log, "CONNECTED PLATFORM WAS FALSY");
+					break;
+				}
+				if (ConnectedPlatform == NULL) {
+					UE_LOGFMT(LogFRMDebug, Log, "CONNECTED PLATFORM WAS NULL");
+					break;
+				}
+				if (ConnectedPlatform == nullptr) {
+					UE_LOGFMT(LogFRMDebug, Log, "CONNECTED PLATFORM WAS A NULL POINTER");
+					break;
+				}
+				AFGBuildableTrainPlatformCargo* TrainPlatformCargo = Cast<AFGBuildableTrainPlatformCargo>(ConnectedPlatform);
+				if (TrainPlatformCargo) {
+					UE_LOGFMT(LogFRMDebug, Log, "IT IS A CARGO PLATFORM");
+					break;
+				}
+				AFGBuildableRailroadStation* Stat = Cast<AFGBuildableRailroadStation>(ConnectedPlatform);
+				if (Stat) {
+					UE_LOGFMT(LogFRMDebug, Log, "IT IS A TRAIN STATION");
+					break;
+				}
+				UE_LOGFMT(LogFRMDebug, Log, "ADDED PLATFORM");
+				PlatformConnection = (ConnectionDirection == 0) ? ConnectedPlatform->mPlatformConnection0 : ConnectedPlatform->mPlatformConnection1;
+				UE_LOGFMT(LogFRMDebug, Log, "FOUND NEXT CONN");
+				break;
 			}
 		}
 
