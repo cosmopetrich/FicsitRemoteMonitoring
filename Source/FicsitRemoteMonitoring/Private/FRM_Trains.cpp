@@ -146,6 +146,35 @@ TArray<TSharedPtr<FJsonValue>> UFRM_Trains::getTrainStation(UObject* WorldContex
 
 		TArray<AFGBuildableTrainPlatform*> TrainPlatforms;
 
+		UE_LOGFMT(LogFRMDebug, Log, "STATION CONN ARRAY HAS LEN {0}", RailStation->mPlatformConnections.Num());
+		if (!RailStation->mPlatformConnections[0]) {
+			UE_LOGFMT(LogFRMDebug, Log, "ARRAY CONNECTION 0 WAS FALSY");
+		}
+		else if (!RailStation->mPlatformConnections[0]->GetConnectedTo()) {
+			UE_LOGFMT(LogFRMDebug, Log, "ARRAY CONNECTION 0 INVERSE CONNECTION WAS FALSY");
+		}
+		if (!RailStation->mPlatformConnections[1]) {
+			UE_LOGFMT(LogFRMDebug, Log, "ARRAY CONNECTION 1 WAS FALSY");
+		}
+		else if (!RailStation->mPlatformConnections[1]->GetConnectedTo()) {
+			UE_LOGFMT(LogFRMDebug, Log, "ARRAY CONNECTION 1 INVERSE CONNECTION WAS FALSY");
+		}
+		if (!RailStation->mPlatformConnection0) {
+			UE_LOGFMT(LogFRMDebug, Log, "STATION CONNECTION 0 WAS FALSY");
+		} else if (!RailStation->mPlatformConnection0->GetConnectedTo()) {
+			UE_LOGFMT(LogFRMDebug, Log, "STATION CONNECTION 0 INVERSE CONNECTION WAS FALSY");
+		}
+		if (!RailStation->mPlatformConnection1) {
+			UE_LOGFMT(LogFRMDebug, Log, "STATION CONNECTION 1 WAS FALSY");
+		} else if (!RailStation->mPlatformConnection1->GetConnectedTo()) {
+			UE_LOGFMT(LogFRMDebug, Log, "STATION CONNECTION 1 INVERSE CONNECTION WAS FALSY");
+		}
+
+		if (!RailStation->GetStationOutputConnection()->GetConnectedTo()) {
+			UE_LOGFMT(LogFRMDebug, Log, "STATION OUTPUT INVERSE CONNECTION WAS FALSY");
+		}
+
+
 		UFGTrainPlatformConnection* PlatformConnection = RailStation->GetStationOutputConnection();
 		if (PlatformConnection) {
 			// Platform connections have a 'direction' with a value that is either 0 or 1.
