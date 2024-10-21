@@ -146,108 +146,67 @@ TArray<TSharedPtr<FJsonValue>> UFRM_Trains::getTrainStation(UObject* WorldContex
 
 		TArray<AFGBuildableTrainPlatform*> TrainPlatforms;
 
-		UE_LOGFMT(LogFRMDebug, Log, "STATION CONN ARRAY HAS LEN {0}", RailStation->mPlatformConnections.Num());
-		if (!RailStation->mPlatformConnections[0]) {
-			UE_LOGFMT(LogFRMDebug, Log, "ARRAY CONNECTION 0 WAS FALSY");
-		}
-		else if (!RailStation->mPlatformConnections[0]->GetConnectedTo()) {
-			UE_LOGFMT(LogFRMDebug, Log, "ARRAY CONNECTION 0 INVERSE CONNECTION WAS FALSY");
-		}
-		if (!RailStation->mPlatformConnections[1]) {
-			UE_LOGFMT(LogFRMDebug, Log, "ARRAY CONNECTION 1 WAS FALSY");
-		}
-		else if (!RailStation->mPlatformConnections[1]->GetConnectedTo()) {
-			UE_LOGFMT(LogFRMDebug, Log, "ARRAY CONNECTION 1 INVERSE CONNECTION WAS FALSY");
-		}
-		if (!RailStation->mPlatformConnection0) {
-			UE_LOGFMT(LogFRMDebug, Log, "STATION CONNECTION 0 WAS FALSY");
-		} else if (!RailStation->mPlatformConnection0->GetConnectedTo()) {
-			UE_LOGFMT(LogFRMDebug, Log, "STATION CONNECTION 0 INVERSE CONNECTION WAS FALSY");
-		}
-		if (!RailStation->mPlatformConnection1) {
-			UE_LOGFMT(LogFRMDebug, Log, "STATION CONNECTION 1 WAS FALSY");
-		} else if (!RailStation->mPlatformConnection1->GetConnectedTo()) {
-			UE_LOGFMT(LogFRMDebug, Log, "STATION CONNECTION 1 INVERSE CONNECTION WAS FALSY");
-		}
-
-		if (!RailStation->GetStationOutputConnection()->GetConnectedTo()) {
-			UE_LOGFMT(LogFRMDebug, Log, "STATION OUTPUT INVERSE CONNECTION WAS FALSY");
-		}
-
-
 		UFGTrainPlatformConnection* PlatformConnection = RailStation->GetStationOutputConnection();
-		if (PlatformConnection) {
-			// Platform connections have a 'direction' with a value that is either 0 or 1.
-			// The next platform can be found using the opposite value to what we started with.
-			uint8 ConnectionDirection = (PlatformConnection->mComponentDirection == 0) ? 1 : 0;
-			while (PlatformConnection) {
-				/*
-				 * I am confuse. Most of the time I cannot access public functions. If I do, SF fails to load with the generic "operating system error".
-				 * This occurs even if the funciton is just a getter.
-				 * However, accessing the private field behidn the getter will work fine so long as I make it accessible to blueprint.
-				 * But some public function still work, e.g. getstationoutputconnection above, even though they are not tagged for reflection.
-				 * platformconnection->platformowner fails with a segfault even if I guard against platformconnection being false/null/nullptr and I've set up friends.
-				 * And then the mPlatfromConnections TArray sometimes shows up with a length of -1 ???. 
-				 * Another one that doesn't work is FGbuildabletrainplatform.GetConnectedPlatformInDirectionOf yet platformconnection->getplatformowner works fine  
-				 * The ones which work have the `class` keyword. Is that because they're masking something which is invisible because we don't have the full source? 
-				 * todo: maybe try making getconnectedplatformindirectionof callable just to see if it fails
-				 * Okay, it *does* fail, whereas 'Onrep_railroadtrack' *works* and *is* flagged for reflection. */
-				uint8 tempdir = PlatformConnection->mComponentDirection;
-				UE_LOGFMT(LogFRMDebug, Log, "FIRST CONNECTION WAS OKAY AND HAS DIR {0}", tempdir);
-				bool isConn = PlatformConnection->IsConnected();
-				UE_LOGFMT(LogFRMDebug, Log, "FIRST CONNECTION STATUS IS {0}", isConn);
-
-				PlatformConnection = PlatformConnection->mConnectedTo;
-				
-				if (PlatformConnection == NULL) {
-					UE_LOGFMT(LogFRMDebug, Log, "INVERSE CONNECTION WAS NULL");
-					break;
-				}
-				if (PlatformConnection == nullptr) {
-					UE_LOGFMT(LogFRMDebug, Log, "INVERSE CONNECTION WAS A NULL POINTER");
-					break;
-				}
-				if (!PlatformConnection) {
-					UE_LOGFMT(LogFRMDebug, Log, "INVERSE CONNECTION WAS FALSY");
-					break;
-				}
-
-				tempdir = PlatformConnection->mComponentDirection;
-				UE_LOGFMT(LogFRMDebug, Log, "INVERSE CONNECTION WAS OKAY AND HAS DIR {0}", tempdir);
-				isConn = PlatformConnection->IsConnected();
-				UE_LOGFMT(LogFRMDebug, Log, "INVERSE CONNECTION STATUS IS {0}", isConn);
-				
-				//AFGBuildableTrainPlatform* ConnectedPlatform = PlatformConnection->platformOwner;
-				AFGBuildableTrainPlatform* ConnectedPlatform = PlatformConnection->GetPlatformOwner();
-				// https://forums.unrealengine.com/t/tarray-num-returning-negative-number-and-causing-crash/106308
-				TrainPlatforms.Add(ConnectedPlatform);
-				if (!ConnectedPlatform) {
-					UE_LOGFMT(LogFRMDebug, Log, "CONNECTED PLATFORM WAS FALSY");
-					break;
-				}
-				if (ConnectedPlatform == NULL) {
-					UE_LOGFMT(LogFRMDebug, Log, "CONNECTED PLATFORM WAS NULL");
-					break;
-				}
-				if (ConnectedPlatform == nullptr) {
-					UE_LOGFMT(LogFRMDebug, Log, "CONNECTED PLATFORM WAS A NULL POINTER");
-					break;
-				}
-				AFGBuildableTrainPlatformCargo* TrainPlatformCargo = Cast<AFGBuildableTrainPlatformCargo>(ConnectedPlatform);
-				if (TrainPlatformCargo) {
-					UE_LOGFMT(LogFRMDebug, Log, "IT IS A CARGO PLATFORM");
-					break;
-				}
-				AFGBuildableRailroadStation* Stat = Cast<AFGBuildableRailroadStation>(ConnectedPlatform);
-				if (Stat) {
-					UE_LOGFMT(LogFRMDebug, Log, "IT IS A TRAIN STATION");
-					break;
-				}
-				UE_LOGFMT(LogFRMDebug, Log, "ADDED PLATFORM");
-				PlatformConnection = (ConnectionDirection == 0) ? ConnectedPlatform->mPlatformConnection0 : ConnectedPlatform->mPlatformConnection1;
-				UE_LOGFMT(LogFRMDebug, Log, "FOUND NEXT CONN");
+		uint8 ConnectionDirection = PlatformConnection->mComponentDirection;
+		while (PlatformConnection) {
+			if (!PlatformConnection->IsConnected()) {
+				// The platform connection is not connected to another platform connection
+				// Meaning we've reached the end of a line of platforms
+				UE_LOGFMT(LogFRMDebug, Log, "Platform connection was not connected to another connection");
 				break;
 			}
+
+			PlatformConnection = PlatformConnection->GetConnectedTo();
+			if (!PlatformConnection) {
+				// NB: The block of code here should not find any stations, as this test always seems to evaluate true.
+				// This happens even though the IsConnected() returns true.
+				// Once we figure out what's going on it can probably be removed or moved to an && condition on the previous block
+				// Since it's effectively testing the same thing, i.e. that we've reached the final platform.
+				UE_LOGFMT(LogFRMDebug, Log, "Next platform connection was NULL");
+				break;
+			}
+
+			// Beyond this point is basically pseudocode as I've never gotten past the previous statement
+			
+			AFGBuildableTrainPlatform* ConnectedPlatform = PlatformConnection->GetPlatformOwner();
+
+			if(Cast<AFGBuildableRailroadStation>(ConnectedPlatform)) {
+				// At this point we've either reached a second station stacked in series
+				// or a station at the end of the cargo platforms for a "dual-headed" train
+				// In either case we can stop looking for more platforms
+				UE_LOGFMT(LogFRMDebug, Log, "Next platform connection was to a train station");
+				break;
+			}
+
+			AFGBuildableTrainPlatformCargo* ConnectedPlatformCargo = Cast<AFGBuildableTrainPlatformCargo>(ConnectedPlatform);
+			if (ConnectedPlatformCargo) {
+				UE_LOGFMT(LogFRMDebug, Log, "Found a cargo platform");
+				TrainPlatforms.Add(ConnectedPlatformCargo);
+			}
+
+			// Note that at this stage we may have also found an "empty" platform
+			// However we don't currently do anything with those and will just proceed looking for more cargo platforms
+			// Though in the future perhaps there's some benefit to exposing them since we can still test if there's anything docked there etc
+
+			// I may be visualising this incorrectly since I haven't been able to test it, but I believe we can just keep using the same direction.
+			// Consider a station with two freight platforms. Each station/platform has two connections, one "forward", one "backwards".
+			// The connection we get from GetStationOutputConnection() is marked with an asterisk.
+			// Per the comments in SML, connections have a direction of 0 or 1, and must connect to a connection with the opposite direction.
+			// So we leave the station on a connection with dir 1, then get the first platform's connection with dir 0 when we call GetConnectedTo(), etc.
+			//
+			// Station   -  Platform  -  Platform
+			// (0) (*1)  -  (0) (1)   -  (0) (1)
+			//
+			// So we should always be 'leaving' a platform on the same dir connection as we started with from the original station.
+			// However, I may be interpreting this wrong and we may need to flip it each time with something like:
+			// uint8 ConnectionDirection = (PlatformConnection->mComponentDirection == 0) ? 1 : 0;
+			//
+			// The way to test is probably just to set up a station with >= 2 platforms then see if we find them both,
+			// or if we arrive back at the station we started from because we accidentally reversed direction after the first platform.
+			//
+			// Also, ConnectedPlatform->GetConnectedPlatformInDirectionOf(int) does not appear to be callable from BP and triggers an "operating system error".
+
+			PlatformConnection = ConnectedPlatform->mPlatformConnections[ConnectionDirection];
 		}
 
 		TArray<TSharedPtr<FJsonValue>> JTrainPlatformArray;
