@@ -1,0 +1,21 @@
+{
+    "name": "FRM-OpenAPI",
+    "image": "ghcr.io/devcontainers/templates/python:4.0.2",
+    "customizations": {
+      "vscode": {
+        "extensions": [
+          "redhat.vscode-yaml"
+        ],
+        "settings": {
+          "redhat.telemetry.enabled": false,
+          "yaml.extension.recommendations": false,
+          "yaml.schemaStore.enable": false
+        }
+      }
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/java:1": {},
+        "ghcr.io/devcontainers/features/node:1": {}
+    },
+    "postCreateCommand": "bash -i .devcontainer/setup.sh"
+}
