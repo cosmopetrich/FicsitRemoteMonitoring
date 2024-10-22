@@ -1,0 +1,330 @@
+= FicsIt Remote Monitoring
+team@openapitools.org
+1.0.10
+:toc: left
+:numbered:
+:toclevels: 4
+:source-highlighter: highlightjs
+:keywords: openapi, rest, FicsIt Remote Monitoring
+:specDir: 
+:snippetDir: 
+:generator-template: v1 2019-12-20
+:info-url: https://openapi-generator.tech
+:app-name: FicsIt Remote Monitoring
+
+== Introduction
+The JSON API provided by [Ficsit Remote Monitoring](https://ficsit.app/mod/FicsitRemoteMonitoring).
+
+
+// markup not found, no include::{specDir}intro.adoc[opts=optional]
+
+
+
+== Endpoints
+
+
+[.Default]
+=== Default
+
+
+[.getConstructor]
+==== GET /getConstructor
+
+Operation Id:: getConstructor
+
+
+Retrieve data on all constructors in the world
+
+===== Description
+
+
+
+
+// markup not found, no include::{specDir}getConstructor/GET/spec.adoc[opts=optional]
+
+
+
+===== Parameters
+
+
+
+
+
+
+
+===== Return Type
+
+<<GetFactory>>
+
+
+===== Content Type
+
+* application/json
+
+===== Responses
+
+.HTTP Response Codes
+[cols="2,3,1"]
+|===
+| Code | Message | Datatype
+
+
+| 200
+| 
+|  <<GetFactory>>
+
+|===
+
+===== Samples
+
+
+// markup not found, no include::{snippetDir}getConstructor/GET/http-request.adoc[opts=optional]
+
+
+// markup not found, no include::{snippetDir}getConstructor/GET/http-response.adoc[opts=optional]
+
+
+
+// file not found, no * wiremock data link :getConstructor/GET/GET.json[]
+
+
+ifdef::internal-generation[]
+===== Implementation
+
+// markup not found, no include::{specDir}getConstructor/GET/implementation.adoc[opts=optional]
+
+
+endif::internal-generation[]
+
+
+[.getFactory]
+==== GET /getFactory
+
+Operation Id:: getFactory
+
+
+Retrieve data on all factories in the world, regardless of type
+
+===== Description
+
+
+
+
+// markup not found, no include::{specDir}getFactory/GET/spec.adoc[opts=optional]
+
+
+
+===== Parameters
+
+
+
+
+
+
+
+===== Return Type
+
+<<GetFactory>>
+
+
+===== Content Type
+
+* application/json
+
+===== Responses
+
+.HTTP Response Codes
+[cols="2,3,1"]
+|===
+| Code | Message | Datatype
+
+
+| 200
+| 
+|  <<GetFactory>>
+
+|===
+
+===== Samples
+
+
+// markup not found, no include::{snippetDir}getFactory/GET/http-request.adoc[opts=optional]
+
+
+// markup not found, no include::{snippetDir}getFactory/GET/http-response.adoc[opts=optional]
+
+
+
+// file not found, no * wiremock data link :getFactory/GET/GET.json[]
+
+
+ifdef::internal-generation[]
+===== Implementation
+
+// markup not found, no include::{specDir}getFactory/GET/implementation.adoc[opts=optional]
+
+
+endif::internal-generation[]
+
+
+[#models]
+== Models
+
+
+[#GetFactory]
+=== _GetFactory_ 
+
+
+
+
+[.fields-GetFactory]
+[cols="2,1,1,2,4,1"]
+|===
+| Field Name| Required| Nullable | Type| Description | Format
+
+| Name
+| 
+| 
+|   String  
+| Name of the building
+|     
+
+| ClassName
+| 
+| 
+|   String  
+| Unreal Engine class name of the building
+|     
+
+| Location
+| 
+| 
+| <<LocationSingle>>    
+| 
+|     
+
+| Recipe
+| 
+| 
+|   String  
+| Name of the recipe currently in use
+|     
+
+| RecipeClassName
+| 
+| 
+|   String  
+| Unreal Engine class name of the recipe being produced
+|     
+
+| production
+| 
+| 
+|   List   of <<GetFactory_production_inner>>
+| 
+|     
+
+|===
+
+
+
+[#GetFactoryProductionInner]
+=== _GetFactoryProductionInner_ 
+
+
+
+
+[.fields-GetFactoryProductionInner]
+[cols="2,1,1,2,4,1"]
+|===
+| Field Name| Required| Nullable | Type| Description | Format
+
+| Name
+| 
+| 
+|   String  
+| Name of the item being produced
+|     
+
+| ClassName
+| 
+| 
+|   String  
+| Unreal Engine class name of the item being produced
+|     
+
+| Amount
+| 
+| 
+|   Integer  
+| Number of items stored in building&#39;s output buffer
+|     
+
+| CurrentProd
+| 
+| 
+|   Float  
+| Number of items currently produced per production cycle
+| float    
+
+| MaxProd
+| 
+| 
+|   Float  
+| Number of items produced per production cycle at peak efficiency
+| float    
+
+| ProdPercent
+| 
+| 
+|   Float  
+| Current efficiency
+| float    
+
+|===
+
+
+
+[#LocationSingle]
+=== _LocationSingle_ 
+
+
+
+
+[.fields-LocationSingle]
+[cols="2,1,1,2,4,1"]
+|===
+| Field Name| Required| Nullable | Type| Description | Format
+
+| x
+| 
+| 
+|   Double  
+| Location on the world&#39;s X axis (east/west)
+| double    
+
+| y
+| 
+| 
+|   Double  
+| Location on the world&#39;s Y axis (north/south)
+| double    
+
+| z
+| 
+| 
+|   Double  
+| Location on the world&#39;s Z axis (up/down)
+| double    
+
+| rotation
+| 
+| 
+|   Double  
+| Rotation relative to the world (north as 0)
+| double    
+
+|===
+
+
+

@@ -1,0 +1,158 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "FicsIt Remote Monitoring",
+    "description": "The JSON API provided by [Ficsit Remote Monitoring](https://ficsit.app/mod/FicsitRemoteMonitoring).",
+    "version": "1.0.10"
+  },
+  "components": {
+    "schemas": {
+      "BuildingName": {
+        "type": "string",
+        "description": "Name of the building",
+        "example": "Constructor"
+      },
+      "BuildingClassName": {
+        "type": "string",
+        "description": "Unreal Engine class name of the building",
+        "example": "Build_ConstructorMk1_C"
+      },
+      "LocationSingle": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "number",
+            "format": "double",
+            "description": "Location on the world's X axis (east/west)",
+            "example": 10123.1
+          },
+          "y": {
+            "type": "number",
+            "format": "double",
+            "description": "Location on the world's Y axis (north/south)",
+            "example": 2034.5
+          },
+          "z": {
+            "type": "number",
+            "format": "double",
+            "description": "Location on the world's Z axis (up/down)",
+            "example": 67
+          },
+          "rotation": {
+            "type": "number",
+            "format": "double",
+            "description": "Rotation relative to the world (north as 0)",
+            "minimum": 0,
+            "maximum": 360,
+            "exclusiveMaximum": true,
+            "example": 90
+          }
+        }
+      },
+      "GetFactory": {
+        "description": "Standard getFactory response",
+        "type": "object",
+        "properties": {
+          "Name": {
+            "$ref": "#/components/schemas/BuildingName"
+          },
+          "ClassName": {
+            "$ref": "#/components/schemas/BuildingClassName"
+          },
+          "Location": {
+            "$ref": "#/components/schemas/LocationSingle"
+          },
+          "Recipe": {
+            "type": "string",
+            "description": "Name of the recipe currently in use",
+            "example": "Iron Plate"
+          },
+          "RecipeClassName": {
+            "type": "string",
+            "description": "Unreal Engine class name of the recipe being produced",
+            "example": "Recipe_IronPlate_C"
+          },
+          "production": {
+            "type": "array",
+            "description": "Production statistics",
+            "items": {
+              "type": "object",
+              "properties": {
+                "Name": {
+                  "type": "string",
+                  "description": "Name of the item being produced",
+                  "example": "Iron Plate"
+                },
+                "ClassName": {
+                  "type": "string",
+                  "description": "Unreal Engine class name of the item being produced",
+                  "example": "Desc_IronPlate_C"
+                },
+                "Amount": {
+                  "type": "integer",
+                  "description": "Number of items stored in building's output buffer",
+                  "minimum": 0,
+                  "example": 3
+                },
+                "CurrentProd": {
+                  "type": "number",
+                  "format": "float",
+                  "description": "Number of items currently produced per production cycle",
+                  "minimum": 0,
+                  "example": 1.75
+                },
+                "MaxProd": {
+                  "type": "number",
+                  "format": "float",
+                  "description": "Number of items produced per production cycle at peak efficiency"
+                },
+                "ProdPercent": {
+                  "type": "number",
+                  "format": "float",
+                  "description": "Current efficiency",
+                  "minimum": 0
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "GetFactory": {
+        "description": "Successful operation",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/GetFactory"
+            }
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/getFactory": {
+      "get": {
+        "operationId": "getFactory",
+        "summary": "Retrieve data on all factories in the world, regardless of type",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/GetFactory"
+          }
+        }
+      }
+    },
+    "/getConstructor": {
+      "get": {
+        "operationId": "getConstructor",
+        "summary": "Retrieve data on all constructors in the world",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/GetFactory"
+          }
+        }
+      }
+    }
+  }
+}

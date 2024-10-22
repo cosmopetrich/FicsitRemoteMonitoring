@@ -1,0 +1,22 @@
+{
+    "name": "FRM-OpenAPI",
+    "image": "mcr.microsoft.com/devcontainers/base:noble",
+    "customizations": {
+      "vscode": {
+        "extensions": [
+          "redhat.vscode-yaml"
+        ],
+        "settings": {
+          "redhat.telemetry.enabled": false,
+          "yaml.extension.recommendations": false,
+          "yaml.schemaStore.enable": false
+        }
+      }
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/java:1": {},
+        "ghcr.io/devcontainers/features/node:1": {},
+        "ghcr.io/devcontainers/features/python:1": {}
+    },
+    "postCreateCommand": "./devcontainer/setup.sh"
+}
