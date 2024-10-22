@@ -116,7 +116,7 @@ If nothing else, the typings might save @derpierre65 some work, as he is current
 
 Support for async in OpenAPI appears limited to some basic provisions for webhooks. There is a related project, [AsyncAPI](https://github.com/asyncapi), which aims to bridge that gap and can operate on OpenAPI configs. It provides its own generator with [support for a limited set of outputs](https://github.com/asyncapi).
 
-There is also a separate tool which can [generate models for a larger set of languages](https://github.com/asyncapi/modelina#features) though it only reads AsyncAPI definitions (not OpenAPI definitions) as inputs. However, AsyncAPI and OpenAPI are now close enough that it would be feasible to convert one to the other if necessary.
+There is also a separate tool which can [generate models for a larger set of languages](https://github.com/asyncapi/modelina#features) though it only reads AsyncAPI definitions (not OpenAPI definitions) as inputs. However, AsyncAPI and OpenAPI are now close enough that it would be [feasible to convert one to the other if necessary](https://github.com/asyncapi/converter-js).
 
 ### Other stuff
 
