@@ -68,7 +68,7 @@ This format is included mostly for completeness. While it is the cleanest option
 
 Sample output can be seen at [output-samples/redoc-static.html](output-samples/redoc-static.html).
 
-[ReDoc](https://github.com/Redocly/redoc) is the open source (MIT licensed) project that is used to run [Redocly](https://redocly.com/), a commercial API documentation hosting site. In addition to the basic FRM API stub other publicly-available of its output include [Docker](https://docs.docker.com/reference/api/engine/version/v1.25/) and [Discourse](https://docs.discourse.org/). It generates a single HTML file as output which can be deployed to Github Pages, [such as they've done with one of their examples](https://redocly.github.io/redoc/#tag/Operations/operation/getMuseumHours).
+[ReDoc](https://github.com/Redocly/redoc) is the open source (MIT licensed) project that is used to run [Redocly](https://redocly.com/), a commercial API documentation hosting site. In addition to the basic FRM API stub other publicly-available examples of its output include [Docker](https://docs.docker.com/reference/api/engine/version/v1.25/) and [Discourse](https://docs.discourse.org/). It generates a single HTML file as output which can be deployed to Github Pages, [such as they've done with one of their examples](https://redocly.github.io/redoc/#tag/Operations/operation/getMuseumHours).
 
 The resulting page is easy to navigate, includes examples in the right-hand pane, and correctly shows constraints (see location->rotation as an example). While the sample output was made with the default options there are [a few more which might be of use](https://redocly.com/docs/redoc/config), such as expanding responses by default, grouping endpoints by tag.
 
