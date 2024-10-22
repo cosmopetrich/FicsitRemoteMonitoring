@@ -1,0 +1,34 @@
+{
+  "devDependencies": {
+    "@eslint/js": "^9.13.0",
+    "@hey-api/client-fetch": "^0.4.2",
+    "@hey-api/openapi-ts": "^0.53.11",
+    "@redocly/cli": "^1.25.8",
+    "@stoplight/spectral-cli": "^6.13.1",
+    "@types/eslint__js": "^8.42.3",
+    "@types/node": "^22.7.9",
+    "eslint": "^9.13.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "3.3.3",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.11.0"
+  },
+  "scripts": {
+    "build": "npm run openapi-clients",
+    "format": "prettier -w .",
+    "openapi-bundle": "tsx ./scripts/openapi-set-version.ts dist/frm-openapi.json",
+    "preopenapi-bundle": "redocly bundle -o dist/frm-openapi.json resources/openapi/frm-openapi.yaml",
+    "openapi-clients": "npm run openapi-client-ts",
+    "openapi-client-ts": "openapi-ts -i dist/frm-openapi.json -o dist/clients/typescript -c @hey-api/client-fetch",
+    "preopenapi-client-ts": "npm run openapi-bundle",
+    "openapi-docs": "redocly build-docs -o dist/redoc-static.html dist/frm-openapi.json",
+    "preopenapi-docs": "npm run openapi-bundle",
+    "openapi-lint": "spectral lint resources/openapi/frm-openapi.yaml",
+    "openapi-yaml-check": "yq resources/openapi/*.yaml resources/openapi/**/*.yaml",
+    "just-tests": "node --import tsx --test test/**/*.ts",
+    "tests": "npm run just-tests",
+    "pretests": "npm run openapi-client-ts",
+    "tests-lint": "eslint test"
+  }
+}

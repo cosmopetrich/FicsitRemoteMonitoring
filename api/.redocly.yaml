@@ -1,0 +1,14 @@
+# Config file for ReDoc, which generates a nice HTML documentation page for the API.
+# See https://redocly.com/docs/cli/configuration
+extends:
+  - recommended-strict
+
+theme:
+  openapi:
+    # Automatically expand the information on successful responses to save the user some clicks
+    expandResponses: "200"
+    # Since FRM doesn't have a set host for its API there isn't much need to show this
+    hideHostname: true
+    # Hide schema titles in output, e.g. "location (PointLocation)" -> "location"
+    # Cleans up the docs a little, especially for those not using generated clients
+    hideSchemaTitles: true

@@ -1,0 +1,12 @@
+# Configures VS (and other editors) so they don't fight with prettier
+# See https://editorconfig.org/
+# and https://learn.microsoft.com/en-us/visualstudio/ide/create-portable-custom-editor-options?view=vs-2022
+
+[*]
+end_of_line = crlf
+
+[*.{js,json,md,mjs,ts,yaml}]
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true

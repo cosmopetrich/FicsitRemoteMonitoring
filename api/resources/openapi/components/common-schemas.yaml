@@ -1,0 +1,148 @@
+# Common schemas which are used across multiple endpoints.
+# Notable omissions are "Name" and "ClassName". Not making those schemas gives slighlty better
+# code generation since we need to add specific examples to them for each endpoint.
+components:
+  schemas:
+    CircuitID:
+      title: CircuitID
+      # FIXME: confirm null behaviour being added in 1.0.11
+      description: ID of the power circuit to which this building is connnected (null if no connection).
+      type:
+        - number
+        - "null"
+      format: float
+      example: 0.10000000149011612
+    PointGeometry:
+      description: Geometry representing a single point in the world.
+      title: PointGeometry
+      type: object
+      additionalProperties: false
+      required:
+        - coordinates
+        - type
+      properties:
+        coordinates:
+          # FIXME: Is this always going to be the same as the x/y/z under the location field?
+          # Belts are different but will "point" type locations ever vary?
+          title: PointGeometry
+          description: The object's location within the world.
+          type: object
+          additionalProperties: false
+          required:
+            - x
+            - "y"
+            - z
+          properties:
+            x:
+              description: Location on the world's X axis (east/west).
+              type: number
+              format: double
+              example: 10123.1
+            y:
+              description: Location on the world's Y axis (north/south).
+              type: number
+              format: double
+              example: 2034.5
+            z:
+              description: Location on the world's Z axis (up/down).
+              type: number
+              format: double
+              example: 67
+        type:
+          description: Type of geometry that these coordinates represent.
+          type: string
+          const: Point
+    Inventory:
+      title: Inventory
+      description: Items currently stored in the object's inventory
+      type: array
+      items:
+        title: InventoryItem
+        type: object
+        additionalProperties: false
+        required:
+          - Name
+          - ClassName
+          - Amount
+        properties:
+          Name:
+            type: string
+            example: Iron Ore
+          ClassName:
+            description: Unreal Engine class name of the item. Many vanilla items will be "BlueprintGeneratedClass".
+            type: string
+            example: BlueprintGeneratedClass
+          Amount:
+            description: Amount of the item stored here. Multiple stacks are combined into a single entry.
+            type: integer
+            minimum: 0
+            example: 482
+    PointLocation:
+      title: PointLocation
+      description: The object's location and rotation within the world.
+      type: object
+      additionalProperties: false
+      required:
+        - x
+        - "y"
+        - z
+        - rotation
+      properties:
+        x:
+          description: Location on the world's X axis (east/west).
+          type: number
+          format: double
+          example: 10123.1
+        y:
+          description: Location on the world's Y axis (north/south).
+          type: number
+          format: double
+          example: 2034.5
+        z:
+          description: Location on the world's Z axis (up/down).
+          type: number
+          format: double
+          example: 67
+        rotation:
+          description: Rotation relative to the world (north=0, east=90).
+          type: number
+          format: double
+          minimum: 0
+          exclusiveMaximum: 360
+          example: 90
+    CommonProperties:
+      # FIXME: What's the deal with these? They seem possibly superfluous alongside the top-level "name"/"classname"
+      # It may be worth breaking these up refering to them (and "geometry") with separated $refs from each api
+      # Since that will allow us to give them more meaningful example values at the cost of slightly worse generated code
+      # I think using `allOf` it may be possible to do a deep merge however in my testing that seemed a little janky with some tools
+      title: CommonProperties
+      type: object
+      description: Common object properties.
+      additionalProperties: false
+      required:
+        - name
+        - type
+      properties:
+        name:
+          type: string
+          description: |-
+            Name of this object.
+            This will likely be the same as `type` for objects that cannot be named by the player.
+          example: Constructor
+        type:
+          type: string
+          description: Name of this type of object.
+          example: Constructor
+    PointFeatures:
+      title: PointFeatures
+      type: object
+      description: Common object features.
+      additionalProperties: false
+      required:
+        - properties
+        - geometry
+      properties:
+        properties: # This is an output field literally named "properties"
+          $ref: "#/components/schemas/CommonProperties"
+        geometry:
+          $ref: "#/components/schemas/PointGeometry"

@@ -1,0 +1,190 @@
+components:
+  pathItems:
+    /getTrainStation:
+      get:
+        operationId: getTrainStation
+        summary: Get all train stations
+        tags:
+          - Trains
+        description: |-
+          Retrieve data about all train stations in the world and their connected platforms.
+          Note that platforms are currently only represented in the output of this endpoint when there is a carriage docked.
+          See [FicsitRemoteMonitoring#101](https://github.com/porisius/FicsitRemoteMonitoring/issues/101) for details.
+        responses:
+          "200":
+            description: Success.
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/TrainStation"
+  schemas:
+    TrainStation:
+      title: TrainStation
+      type: object
+      additionalProperties: false
+      required:
+        - Name
+        - ClassName
+        - location
+        - PowerConsumption
+        - TransferRate
+        - InflowRate
+        - OutflowRate
+        - CargoInventory
+        - CircuitID
+        - features
+      properties:
+        Name:
+          title: Name
+          description: Name of this station.
+          type: string
+          example: Iron Ore Outbound
+        ClassName:
+          title: ClassName
+          description: Unreal Engine class name of the station.
+          type: string
+          example: FGTrainStationIdentifier
+        location:
+          $ref: "common-schemas.yaml#/components/schemas/PointLocation"
+        PowerConsumption:
+          description: Total power consumption in MW of the station and all attached platforms.
+          type: number
+          format: float
+          minimum: 0
+          example: 150
+        TransferRate:
+          # FIXME: Is this per minute, per second?
+          description: Total transfer rate (in+out) of items on all attached platforms.
+          type: number
+          format: float
+          minimum: 0
+          example: 100.5
+        InflowRate:
+          # FIXME: Is this per minute, per second?
+          # FIXME: are in/out load/unload the correct way around here?
+          description: Total rate in m³ at which fluids are being loaded to all attached platforms.
+          type: number
+          format: float
+          minimum: 0
+          example: 315
+        OutflowRate:
+          # FIXME: Is this per minute, per second?
+          # FIXME: are in/out load/unload the correct way around here?
+          description: Total rate in m³ at which fluids are being unloaded from all attached platforms.
+          type: number
+          format: float
+          minimum: 0
+          example: 315
+        CargoInventory:
+          description: |-
+            Data on individual platforms connected to this station.
+            Platforms to which there is not currently a docked carriage will be omitted.
+          type: array
+          items:
+            $ref: "#/components/schemas/TrainStationCargoInventory"
+        CircuitID:
+          $ref: "common-schemas.yaml#/components/schemas/CircuitID"
+        features:
+          $ref: "common-schemas.yaml#/components/schemas/PointFeatures"
+    TrainStationCargoInventory:
+      title: TrainStationCargoInventory
+      type: object
+      additionalProperties: false
+      required:
+        - Name
+        - ClassName
+        - location
+        - PowerConsumption
+        - TransferRate
+        - InflowRate
+        - OutflowRate
+        - LoadingMode
+        - LoadingStatus
+        - DockingStatus
+        - Inventory
+      properties:
+        Name:
+          description: Type of this cargo platform.
+          type: string
+          example: Freight Platform
+        ClassName:
+          description: Unreal Engine class of the cargo platform.
+          type: string
+          example: Build_TrainDockingStation_C
+        location:
+          $ref: "common-schemas.yaml#/components/schemas/PointLocation"
+        PowerConsumption:
+          # FIXME: the value here is probably always 50 for vanilla
+          # But I assume FRM transparently supports modded platforms?
+          description: Power consumption in MW of this platform.
+          type: number
+          format: float
+          minimum: 0
+        TransferRate:
+          # FIXME: Is this per minute, per second?
+          description: Total transfer rate (in+out) of items for this platform.
+          type: number
+          format: float
+          minimum: 0
+          example: 100.5
+        InflowRate:
+          # FIXME: Is this per minute, per second?
+          # FIXME: are in/out load/unload the correct way around here?
+          description: Rate in m³ at which fluids are being loaded to this platform.
+          type: number
+          format: float
+          minimum: 0
+          example: 315
+        OutflowRate:
+          # FIXME: Is this per minute, per second?
+          # FIXME: are in/out load/unload the correct way around here?
+          description: Rate in m³ at which fluids are being unloaded from this platform.
+          type: number
+          format: float
+          minimum: 0
+          example: 315
+        LoadingMode:
+          description: Whether the platform is configured to load or unload from carriages.
+          type: string
+          enum:
+            - Loading
+            - Unloading
+          example: Loading
+        LoadingStatus:
+          description: Whether the platform is currently loading/unloading a carriage or is idle.
+          type: string
+          enum:
+            - Idle
+            - Loading
+            - Unloading
+          example: Idle
+        DockingStatus:
+          type: string
+          enum:
+            - Complete
+            - Idle Wait For Time
+            - Loading
+            - None
+            - UNloading
+            - Wait for Transfer Condition
+            - Waiting For Transfer
+            - Waiting To Start
+          example: "None"
+          # FIXME: what do these mean
+          description: |-
+            Stage of the docking process that the carraige docked to this platform is in.
+
+              - `None` - No carriage is docked to the platform.
+              - `Idle Wait For Time` - Loading/unloading is complete and the train is now waiting for a fixed period of
+                time as defined in the train's timetable entry for this station.
+              - `Loading` - Items or fluids are currently being loaded onto the carriage from the platform.
+              - `UNloading` - Items or fluids are currently being unloaded from the carriage onto the platform.
+              - `Wait for Transfer Condition` - The carriage is waiting until it can fully load or unload
+                as defined in the train's timetable entry for this station.
+              - `Waiting For Transfer` - ???.
+              - `Waiting To Start` - ???.
+              - `Complete` - ???
+        Inventory:
+          $ref: "common-schemas.yaml#/components/schemas/Inventory"

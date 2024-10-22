@@ -1,0 +1,26 @@
+# Config file for Spectral, which lints OpenAPI definitions.
+extends:
+  - spectral:oas
+  - "https://unpkg.com/@stoplight/spectral-documentation/dist/ruleset.mjs"
+
+rules:
+  do-endpoint-ref-must-be-file:
+    description: Endpoint must a $ref to a file in resources/
+    severity: error
+    resolved: false
+    given: $.paths.*.$ref
+    then:
+      function: pattern
+      functionOptions:
+        match: "^resources\/.*yaml$"
+
+  # Operation IDs are used by serial and websocket clients
+  rhoas-operaton-id:
+    description: Paths must have an operation ID
+    severity: error
+    given: "$.paths.*.*"
+    then:
+      function: truthy
+      field: operationId
+# Todo:
+# - check if tags are used

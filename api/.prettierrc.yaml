@@ -1,0 +1,5 @@
+# Config for prettier, which intentionally does not have many options
+# See https://prettier.io/docs/en/options.html
+# Note that prettier also reads .gitignore
+# See https://prettier.io/docs/en/ignore.html
+endOfLine: crlf

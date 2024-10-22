@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "FRM-API", "FRM-API.esproj", "{35F3B9B3-E7DC-4B5D-B58D-420A36F85D39}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{35F3B9B3-E7DC-4B5D-B58D-420A36F85D39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35F3B9B3-E7DC-4B5D-B58D-420A36F85D39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35F3B9B3-E7DC-4B5D-B58D-420A36F85D39}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{35F3B9B3-E7DC-4B5D-B58D-420A36F85D39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35F3B9B3-E7DC-4B5D-B58D-420A36F85D39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35F3B9B3-E7DC-4B5D-B58D-420A36F85D39}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {18196E80-8D08-46D7-A7D0-F4846D65FC45}
+	EndGlobalSection
+EndGlobal
