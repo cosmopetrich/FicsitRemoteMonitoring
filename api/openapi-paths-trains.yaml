@@ -17,21 +17,6 @@ components:
           Retrieve data about all train stations in the world and their connected platforms.
           Note that platforms are currently only represented in the output of this endpoint when there is a carriage docked.
           See [FicsitRemoteMonitoring#101](https://github.com/porisius/FicsitRemoteMonitoring/issues/101) for details.
-
-          ### Docking Status
-
-          The docking status returned for each platform can interpreted as follows.
-
-            - None - No carriage is docked to the platform.
-            - Idle Wait For Time - Loading/unloading is complete and the train is now waiting for a fixed period of
-              time as defined in the train's timetable entry for this station.
-            - Loading - Items or fluids are currently being loaded onto the carriage from the platform.
-            - UNloading - Items or fluids are currently being unloaded from the carriage onto the platform.
-            - Wait for Transfer Condition - The carriage is waiting until it can fully load or unload
-              as defined in the train's timetable entry for this station.
-            - Waiting For Transfer - ???.
-            - Waiting To Start - ???.
-            - Complete - ???
         responses:
           "200":
             description: Success.
@@ -153,21 +138,37 @@ components:
                                 - Wait for Transfer Condition
                                 - Waiting For Transfer
                                 - Waiting To Start
-                              example: None
+                              example: "None"
+                              description: >
+                                Stage of the docking process that the carraige docked to this platform is in.
+
+                                  - None - No carriage is docked to the platform.
+                                  - Idle Wait For Time - Loading/unloading is complete and the train is now waiting for a fixed period of
+                                    time as defined in the train's timetable entry for this station.
+                                  - Loading - Items or fluids are currently being loaded onto the carriage from the platform.
+                                  - UNloading - Items or fluids are currently being unloaded from the carriage onto the platform.
+                                  - Wait for Transfer Condition - The carriage is waiting until it can fully load or unload
+                                    as defined in the train's timetable entry for this station.
+                                  - Waiting For Transfer - ???.
+                                  - Waiting To Start - ???.
+                                  - Complete - ???
                             Inventory:
                               $ref: "openapi-schemas-common.yaml#/components/schemas/Inventory"
                       CircuitID:
                         $ref: "openapi-schemas-common.yaml#/components/schemas/CircuitID"
                       features:
                         type: object
+                        description: Common object features.
                         properties:
                           properties: # This is an output field literally named "properties"
                             type: object
+                            description: Common object properties.
                             properties:
                               name:
                                 $ref: "#/components/schemas/StationName"
                               type:
                                 type: string
+                                description: Generic name for this type of object.
                                 example: Train Station
                           geometry:
                             $ref: "openapi-schemas-common.yaml#/components/schemas/PointGeometry"

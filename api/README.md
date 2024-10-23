@@ -91,13 +91,29 @@ The commands below were written with bash in mind. On Windows you will either ne
 
     Writing it out ot a temporary folder prevents the generator from dumping junk files in your CWD.
 
+
+### Generate clients
+
+ 1. Typescript
+
+    ```bash
+    npm install -g @hey-api/openapi-ts @hey-api/client-fetch
+    npx @hey-api/openapi-ts -i openapi.yaml -o clients/typescript -c @hey-api/client-fetch
+    ```
+
+    This will generate a client that uses [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API), suitable for use in all web browsers released since 2017 and NodeJS >=18. In testing, [HeyAPI](https://heyapi.dev) seems to provide slightly better output than the default OpenAPI generator and doesn't spit out a bunch of unnecessary cruft to go along with it.
+
 ## Style
 
  - Descriptions should be full sentences beginning with an uppercase letter and ending with a period.
  - Prefer `example` to `examples` for schemas to save typing since we don't currently use multiple examples.
+ - Avoid using headings etc in endpoint descriptions (gets put in generated code docstrings)
 
 Possibly use https://github.com/IBM/openapi-validator or https://stoplight.io/open-source/spectral 
 
 ## Misc notes
 
 - When building clients may need to use jq or the like to set the version in the JSON config due to https://github.com/OpenAPITools/openapi-generator-cli/issues/371
+- In general the default generated clients seem a little jank compared to e.g.
+  - https://github.com/hey-api/openapi-ts
+  - https://github.com/openapi-generators/openapi-python-client
