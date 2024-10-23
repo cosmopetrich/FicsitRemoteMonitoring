@@ -10,3 +10,6 @@ openapi-generator-cli version
 mkdir -p ${HOME}/.local/bin
 wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O ${HOME}/.local/bin/yq
 chmod +x ${HOME}/.local/bin/yq 
+
+# Install hatch via pipx so we don't mess with the default python environment
+pipx install hatch

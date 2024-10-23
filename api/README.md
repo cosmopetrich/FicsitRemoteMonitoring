@@ -95,3 +95,9 @@ The commands below were written with bash in mind. On Windows you will either ne
 
  - Descriptions should be full sentences beginning with an uppercase letter and ending with a period.
  - Prefer `example` to `examples` for schemas to save typing since we don't currently use multiple examples.
+
+Possibly use https://github.com/IBM/openapi-validator or https://stoplight.io/open-source/spectral 
+
+## Misc notes
+
+- When building clients may need to use jq or the like to set the version in the JSON config due to https://github.com/OpenAPITools/openapi-generator-cli/issues/371

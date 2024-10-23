@@ -3,12 +3,15 @@ info:
   title: Ficist Remote Monitoring API
   version: "1.0.10"
   contact:
-    url: https://ficsit.app/mod/FicsitRemoteMonitoring
+    name: Ficsit Remote Monitoring
+    email: porisius@users.noreply.github.com
+    url: https://github.com/porisius/FicsitRemoteMonitoring
   x-logo:
-    # FIXME: Possibly a better place to hotlink this from?
+    # FIXME: Possibly there is a better place to hotlink this from?
     url: https://github.com/porisius/FicsitRemoteMonitoring/blob/main/Resources/Icon128.png?raw=true
   description: >
-    [Ficsit Remote Monitoring](https://ficsit.app/mod/FicsitRemoteMonitoring) (FRM) is a Satisfactory mod which provides an API and web interface for viewing information about a Satisfactory world.
+    [Ficsit Remote Monitoring](https://ficsit.app/mod/FicsitRemoteMonitoring) (FRM)
+    is a Satisfactory mod which provides an API and web interface for viewing information about a Satisfactory world.
 
 
 servers:

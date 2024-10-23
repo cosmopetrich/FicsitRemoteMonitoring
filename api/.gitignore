@@ -1,2 +1,5 @@
+# OpenAPI-generated clients
+clients/
+
 # Redoc-generated documentation
 redoc-static.html
