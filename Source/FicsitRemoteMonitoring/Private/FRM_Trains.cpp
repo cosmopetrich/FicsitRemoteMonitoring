@@ -187,7 +187,7 @@ TArray<TSharedPtr<FJsonValue>> UFRM_Trains::getTrainStation(UObject* WorldContex
 				case ETrainPlatformDockingStatus::ETPDS_IdleWaitForTime				:	StatusString = TEXT("Idle Wait For Time");
 				case ETrainPlatformDockingStatus::ETPDS_Loading						:	StatusString = TEXT("Loading");
 				case ETrainPlatformDockingStatus::ETPDS_None						:	StatusString = TEXT("None");
-				case ETrainPlatformDockingStatus::ETPDS_Unloading					:	StatusString = TEXT("UNloading");
+				case ETrainPlatformDockingStatus::ETPDS_Unloading					:	StatusString = TEXT("Unloading");
 				case ETrainPlatformDockingStatus::ETPDS_WaitForTransferCondition	:	StatusString = TEXT("Wait for Transfer Condition");
 				case ETrainPlatformDockingStatus::ETPDS_WaitingForTransfer			:	StatusString = TEXT("Waiting For Transfer");
 				case ETrainPlatformDockingStatus::ETPDS_WaitingToStart				:	StatusString = TEXT("Waiting To Start");
