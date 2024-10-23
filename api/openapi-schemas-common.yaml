@@ -1,0 +1,83 @@
+# Common schemas which are shared between many endpoints
+---
+components:
+  schemas:
+    CircuitID:
+      # FIXME: confirm null behaviour being added in 1.0.11
+      description: ID of the power circuit to which this building is connnected (null if no connection).
+      type:
+        - number
+        - "null"
+      format: float
+      example: 0.10000000149011612
+    PointGeometry:
+      type: object
+      properties:
+        coordinates:
+          # FIXME: Is this always going to be the same as the x/y/z under the location field?
+          # Belts are different but will "point" type locations ever vary?
+          description: The object's location within the world.
+          type: object
+          properties:
+            x:
+              description: Location on the world's X axis (east/west).
+              type: number
+              format: double
+              example: 10123.1
+            y:
+              description: Location on the world's Y axis (north/south).
+              type: number
+              format: double
+              example: 2034.5
+            z:
+              description: Location on the world's Z axis (up/down).
+              type: number
+              format: double
+              example: 67
+        type:
+          type: string
+          const: Point
+    Inventory:
+      description: Items currently stored in the object's inventory
+      type: array
+      items:
+        type: object
+        properties:
+          Name:
+            type: string
+            example: Iron Ore
+          ClassName:
+            description: Unreal Engine class name of the item. Many vanilla items will be "BlueprintGeneratedClass".
+            type: string
+            example: BlueprintGeneratedClass
+          Amount:
+            description: Amount of the item stored here. Multiple stacks are combined into a single entry.
+            type: integer
+            minimum: 0
+            example: 482
+    PointLocation:
+      description: The object's location and rotation within the world.
+      type: object
+      properties:
+        x:
+          description: Location on the world's X axis (east/west).
+          type: number
+          format: double
+          example: 10123.1
+        y:
+          description: Location on the world's Y axis (north/south).
+          type: number
+          format: double
+          example: 2034.5
+        z:
+          description: Location on the world's Z axis (up/down).
+          type: number
+          format: double
+          example: 67
+        rotation:
+          description: Rotation relative to the world (north=0, east=90).
+          type: number
+          format: double
+          minimum: 0
+          exclusiveMaximum: 360
+          example: 90

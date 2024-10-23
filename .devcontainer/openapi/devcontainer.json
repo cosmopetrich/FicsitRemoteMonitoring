@@ -1,6 +1,6 @@
 {
     "name": "FRM-OpenAPI",
-    "image": "ghcr.io/devcontainers/templates/python:4.0.2",
+    "image": "mcr.microsoft.com/devcontainers/python:3.12-bookworm",
     "customizations": {
       "vscode": {
         "extensions": [
@@ -17,5 +17,5 @@
         "ghcr.io/devcontainers/features/java:1": {},
         "ghcr.io/devcontainers/features/node:1": {}
     },
-    "postCreateCommand": "bash -i .devcontainer/setup.sh"
+    "postCreateCommand": "bash -i .devcontainer/openapi/setup.sh"
 }

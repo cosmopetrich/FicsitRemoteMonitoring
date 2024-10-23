@@ -1,0 +1,49 @@
+openapi: 3.1.0
+info:
+  title: Ficist Remote Monitoring API
+  version: "1.0.10"
+  contact:
+    url: https://ficsit.app/mod/FicsitRemoteMonitoring
+  x-logo:
+    # FIXME: Possibly a better place to hotlink this from?
+    url: https://github.com/porisius/FicsitRemoteMonitoring/blob/main/Resources/Icon128.png?raw=true
+  description: >
+    [Ficsit Remote Monitoring](https://ficsit.app/mod/FicsitRemoteMonitoring) (FRM) is a Satisfactory mod which provides an API and web interface for viewing information about a Satisfactory world.
+
+
+servers:
+  - url: "{protocol}://{host}:{port}"
+    variables:
+      protocol:
+        description: >
+          Protocol via which the API is being accessed.
+          HTTPS and WSS requires the use of a separate reverse proxy.
+        default: http
+        enum:
+          - http
+          - https
+          - ws
+          - wss
+      host:
+        description: Network address of the host on which FRM is running.
+        default: localhost
+      port:
+        description: TCP port that FRM is configured to use.
+        default: "8080"
+
+
+tags:
+  - name: Caching
+    x-traitTag: true
+    description: >
+      For performance reasons, FRM will cache responses for certain operations.
+      This currently applies to GET operations for factories (getFactory, getAssembler, etc).
+      As a result, the responses you see from these operations may not be up-to-date.
+      
+      Please consult FRM's configuration documentation if you wish to adjust caching delays.
+  - name: Trains
+
+
+paths:
+  /getTrainStation:
+    $ref: "openapi-paths-trains.yaml#/components/pathItems/getTrainStation"
