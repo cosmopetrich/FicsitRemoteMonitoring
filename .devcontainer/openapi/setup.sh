@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-set -eu -o pipefail
+set -eux -o pipefail
 
 # Install the generator and run 'version' so that it downloads the appropriate Java (not JS) cruft
 # Currently disabled and unused
@@ -12,9 +12,3 @@ set -eu -o pipefail
 mkdir -p ${HOME}/.local/bin
 wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O ${HOME}/.local/bin/yq
 chmod +x ${HOME}/.local/bin/yq 
-
-# Install HeyAPI for TS library generation
-npm install -g @hey-api/openapi-ts @hey-api/client-fetch
-
-# Install redocly for docs generation
-npm install -g @redocly/cli

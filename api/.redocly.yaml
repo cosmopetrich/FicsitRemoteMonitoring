@@ -1,6 +1,5 @@
 # Config file for ReDoc, which generates a nice HTML documentation page for the API.
 # See https://redocly.com/docs/cli/configuration
----
 extends:
  - recommended-strict
 

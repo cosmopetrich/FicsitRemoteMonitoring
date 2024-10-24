@@ -2,25 +2,34 @@ This folder contains FRM's HTTP API definitions, written using [OpenAPI](https:/
 
 ## Structure
 
-The API definitions are stored in the [openapi](openapi) directory. The [frm-openapi.yaml](openapi/frm-openapi.yaml) file provides the base API definition and references the other [components/*.yaml](openapi/components/) files using [the $ref keyword](https://swagger.io/docs/specification/v3_0/using-ref/). Breaking them up in this way is not strictly necessary, but does keep the files from being too unweildy.
+It's implemented as a NodeJS project, primarily because most OpenAPI-related tooling is written in JS. However, you don't need to know any JS to work on the API definitions.
 
-The openapitools.json, redocly.yaml, and spectral.yaml files provide configuration for the code generation, documentation, and linting tools respectively. The GNUMakefile defines targets for the [make command](https://en.wikipedia.org/wiki/Make_(software)).
+The definitions themselves are written in raw YAML and are stored in the [resources/openapi](resources/openapi) directory. The [frm-openapi.yaml](resources/openapi/frm-openapi.yaml) file provides the base API definition and references the other [components/*.yaml](resources/openapi/components/) files using [the $ref keyword](https://swagger.io/docs/specification/v3_0/using-ref/). Breaking them up in this way is not strictly necessary, but does keep the files from being too unweildy.
+
+Under the [tests](tests) directory are some simple integration-style tests, written in Typescript. They're very simple, and merely attempt to test that FRM's endpoints and the API definitions are mostly in alignment.
 
 ## Building manually
 
 It is recommended to use the "FRM-OpenAPI" devcontainer attached to this repository which can be used with [Github Codespaces](https://docs.github.com/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers) or [VSCode](https://code.visualstudio.com/docs/devcontainers/containers) to obtain a prebuilt Linux environment with the dependencies ready to go.
 
-While it's possible to install the dependencies and run everything on Windows, the commands below were written with Linux/MacOS in mind. On Windows you will either need to install bash and GNU make, or read the [GNUMakefile](GNUmakefile) in this directory and adjust the commands for powershell.
+Building on Windows should be possible if you [install NodeJS](https://nodejs.org/en/download/prebuilt-installer).
+
+#### Installing the dependencies
+
+Most of them can be installed using NodeJS.
+
+```bash
+npm install
+```
+
+The exception is [yq](https://github.com/mikefarah/yq), which you'll need to download manually or obtain from your package manager.
 
 #### Validate the YAML
 
 ```bash
 make check-yaml
 ```
-
-This requires [yq](https://github.com/mikefarah/yq), a command-line tool for interacting with YAML files.
-
-While this step can be skipped, yq tends to give more directly actionable output if there's an error in the YAML syntax when compared to the OpenAPI-related tools.
+While this step can be skipped, it tends to give more directly actionable output if there's an error in the YAML syntax when compared to the OpenAPI-related tools.
 
 #### Combine the YAML files into a single JSON file
 
@@ -48,11 +57,22 @@ This requires [ReDoc](https://github.com/Redocly/redocly-cli?tab=readme-ov-file#
 make clients
 ```
 
+This will generate the following under `clients/`.
+
  - Typescript
    - This requires [HeyAPI](https://heyapi.dev) which requires NodeJS.
    - The generated client uses [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) and suitable for use in all web browsers released since 2017 or with NodeJS >=18. In testing, HeyAPI seems to provide slightly better output than the default OpenAPI generator and doesn't spit out a bunch of unnecessary cruft to go along with it.
 
+#### Running tests
+
+- need to install tsx, probably globally
+
+npx tsx --test contract.ts
+
 ## Style
+
+
+
 
  - Descriptions should be full sentences beginning with an uppercase letter and ending with a period.
  - Prefer `example` to `examples` for schemas to save typing since we don't currently use multiple examples.
