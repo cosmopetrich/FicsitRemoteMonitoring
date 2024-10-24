@@ -8,6 +8,15 @@
     "typescript": "^5.6.3"
   },
   "scripts": {
-    "test": "tsx ./tests/contract.ts"
+    "preopenapi-bundle": "redocly bundle --output dist/frm-openapi.yaml ",
+    "openapi-bundle": "tsx ./scripts/openapi-set-version.ts dist/frm-openapi.yaml",
+    "openapi-client-ts": "openapi-ts -i dist/frm-openapi.yaml -o dist/clients/typescript -c @hey-api/client-fetch",
+    "preopenapi-client-ts": "npm run openapi-bundle",
+    "openapi-docs": "redocly build-docs --output dist/redoc-static.html dist/frm-openapi.yaml",
+    "preopenapi-docs": "npm run openapi-bundle",
+    "openapi-lint": "spectral lint resources/openapi/frm-openapi.yaml",
+    "openapi-yaml-check": "yq resources/openapi/*.yaml resources/openapi/**/*.yaml",
+    "test": "tsx ./tests/contract.ts",
+    "pretest": "npm run openapi-client-ts",
   }
 }
