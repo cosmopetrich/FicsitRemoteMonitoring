@@ -1,5 +1,8 @@
-# OpenAPI-generated clients
+# Generated clients
 clients/
+
+# Generated definition
+frm-openapi.json
 
 # Redoc-generated documentation
 redoc-static.html
