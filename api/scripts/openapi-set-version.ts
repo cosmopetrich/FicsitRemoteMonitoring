@@ -23,7 +23,8 @@ try {
 // Use yq to set the version since it handles preserving the formatting for us
 // If we imported the JSON and wrote it out again then things would be re-ordered etc
 try {
-    execSync(`yq e -i '.info.version = "${version}"' ${filename}`);
+    // The odd use of quotations is an attempt to be compatible with Windows
+    execSync(`yq e -i ".info.version = """${version}"""" ${filename}`);
 } catch (e) {
     console.error(`Failed to update ${filename}`);
     process.exit(1);
