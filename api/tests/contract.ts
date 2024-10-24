@@ -5,7 +5,7 @@ import * as frm from "../dist/clients/typescript";
 import type { GetTrainStationResponse } from "../dist/clients/typescript";
 
 frm.client.setConfig({
-    baseUrl: "http://localhost:8080",
+    baseUrl: process.env.FRM_HTTP_ADDR ?? "http://localhost:8080",
 });
 
 describe("getTrainStation", () => {
