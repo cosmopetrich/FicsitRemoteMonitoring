@@ -12,49 +12,46 @@ Under the [tests](tests) directory are some simple integration-style tests, writ
 
 It is recommended to use the "FRM-OpenAPI" devcontainer attached to this repository which can be used with [Github Codespaces](https://docs.github.com/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers) or [VSCode](https://code.visualstudio.com/docs/devcontainers/containers) to obtain a prebuilt Linux environment with the dependencies ready to go.
 
-Building on Windows should be possible if you [install NodeJS](https://nodejs.org/en/download/prebuilt-installer).
+Building directly on Windows should be possible if you [install NodeJS](https://nodejs.org/en/download/prebuilt-installer) and [yq](https://github.com/mikefarah/yq).
 
-#### Installing the dependencies
-
-Most of them can be installed using NodeJS.
+#### Install NodeJS packages
 
 ```bash
 npm install
 ```
 
-The exception is [yq](https://github.com/mikefarah/yq), which you'll need to download manually or obtain from your package manager.
-
 #### Validate the YAML
 
 ```bash
-make check-yaml
+npm run openapi-yaml-check
 ```
-While this step can be skipped, it tends to give more directly actionable output if there's an error in the YAML syntax when compared to the OpenAPI-related tools.
+
+If it prints a bunch of YAML then everything is okay. If there's an error then the output will be short and succinct. While this step can be skipped, it tends to give more directly actionable output if there's an error in the YAML syntax when compared to the OpenAPI-related tools.
 
 #### Combine the YAML files into a single JSON file
 
 Note that this will be be done automatically when needed by another command.
 
 ```bash
-make frm-openapi.yaml
+npm run openapi-bundle
 ```
 
-This requires [ReDoc](https://github.com/Redocly/redocly-cli?tab=readme-ov-file#usage) which requires NodeJS. Although the official openapi-generator can bundle files in the same way, it does not support OpenAPI 3.1.0 fully (omits `type`, strange behaviour with `$ref` siblings, etc).
+This use Redoc to generate a `dist/frm-openapi.json` from all the YAML files under `resources/openapi` and set the API version number to something (hopefully) sane. A single JSON file is more portable and widely-supported than multiple YAML files. It uses Redoc since that is already being used to generate documentation and because the official openapi-generator does not support OpenAPI 3.1.0 fully (omits `type`, strange behaviour with `$ref` siblings, etc).
 
 
 #### Build the documentation
 
 ```bash
-make redoc-static.html
+npm run openapi-docs
 ```
 
-This requires [ReDoc](https://github.com/Redocly/redocly-cli?tab=readme-ov-file#usage) which requires NodeJS. The resulting `redoc-static.html` file can be opened in your browser or deployed to just about any hosting platform.
+This will use Redoc to convert the `dist/frm-openapi.json` file into a `dist/redoc-static.html` file. That file can be opened in your browser or deployed to just about any hosting platform.
 
 
 #### Generate clients
 
 ```bash
-make clients
+npm run openapi-clients
 ```
 
 This will generate the following under `clients/`.
@@ -65,9 +62,9 @@ This will generate the following under `clients/`.
 
 #### Running tests
 
-- need to install tsx, probably globally
-
-npx tsx --test contract.ts
+```bash
+npm run tests
+```
 
 ## Style
 

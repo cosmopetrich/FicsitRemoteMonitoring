@@ -8,15 +8,16 @@
     "typescript": "^5.6.3"
   },
   "scripts": {
-    "preopenapi-bundle": "redocly bundle --output dist/frm-openapi.yaml ",
-    "openapi-bundle": "tsx ./scripts/openapi-set-version.ts dist/frm-openapi.yaml",
-    "openapi-client-ts": "openapi-ts -i dist/frm-openapi.yaml -o dist/clients/typescript -c @hey-api/client-fetch",
+    "openapi-bundle": "tsx ./scripts/openapi-set-version.ts dist/frm-openapi.json",
+    "preopenapi-bundle": "redocly bundle -o dist/frm-openapi.json resources/openapi/frm-openapi.yaml",
+    "openapi-clients": "npm run openapi-client-ts",
+    "openapi-client-ts": "openapi-ts -i dist/frm-openapi.json -o dist/clients/typescript -c @hey-api/client-fetch",
     "preopenapi-client-ts": "npm run openapi-bundle",
-    "openapi-docs": "redocly build-docs --output dist/redoc-static.html dist/frm-openapi.yaml",
+    "openapi-docs": "redocly build-docs -o dist/redoc-static.html dist/frm-openapi.json",
     "preopenapi-docs": "npm run openapi-bundle",
     "openapi-lint": "spectral lint resources/openapi/frm-openapi.yaml",
     "openapi-yaml-check": "yq resources/openapi/*.yaml resources/openapi/**/*.yaml",
-    "test": "tsx ./tests/contract.ts",
-    "pretest": "npm run openapi-client-ts",
+    "tests": "tsx ./tests/contract.ts",
+    "pretest": "npm run openapi-client-ts"
   }
 }

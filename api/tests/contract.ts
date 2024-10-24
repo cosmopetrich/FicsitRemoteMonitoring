@@ -1,14 +1,18 @@
 import { strict as assert } from "node:assert";
 import { before, describe, it } from "node:test";
 
-import * as frm from "../clients/typescript";
-import type { GetTrainStationResponse } from "../clients/typescript";
+import * as frm from "../dist/clients/typescript";
+import type { GetTrainStationResponse } from "../dist/clients/typescript";
+
+frm.client.setConfig({
+    baseUrl: "http://localhost:8080",
+});
 
 describe("getTrainStation", () => {
     let resp: GetTrainStationResponse;
 
     before(async () => {
-        const {data: resp} = await frm.getTrainStation();
+        const {data: resp} = await frm.getTrainStation(frm);
     });
 
     it("does stuff", () => {
