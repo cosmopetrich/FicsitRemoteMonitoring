@@ -46,7 +46,7 @@ components:
           description: Unreal Engine class name of the station.
           type: string
           example: FGTrainStationIdentifier
-        Location:
+        location:
           $ref: "common-schemas.yaml#/components/schemas/PointLocation"
         PowerConsumption:
           description: Total power consumption in MW of the station and all attached platforms.
