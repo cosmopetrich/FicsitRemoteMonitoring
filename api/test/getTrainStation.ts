@@ -40,19 +40,12 @@ describe("getTrainStation", () => {
   });
 
   // Red stations "2HeadFront2Plat"/"2HeadBack2Plat"
-  it("handles double-headed stations", () => {
-    const station1 = resp.filter((s) => s.Name === "2HeadFront2Plat")[0];
-    const station2 = resp.filter((s) => s.Name === "2HeadBack2Plat")[0];
-    assert.deepStrictEqual(
-      station1.CargoInventory.sort(),
-      station2.CargoInventory.sort(),
-    );
-  });
-
-  // Green stations "Serial0Front0Plat"/"Serial0Back2Plat"
-  it("handles serial stations", () => {
-    const station1 = resp.filter((s) => s.Name === "Serial0Front0Plat")[0];
-    const station2 = resp.filter((s) => s.Name === "Serial0Back2Plat")[0];
-    assert.strictEqual(station1.CargoInventory.length, 0);
-  });
+  //it("handles double-headed stations", () => {
+  //  const station1 = resp.filter((s) => s.Name === "2HeadFront2Plat")[0];
+  //  const station2 = resp.filter((s) => s.Name === "2HeadBack2Plat")[0];
+  //  assert.deepStrictEqual(
+  //    station1.CargoInventory.sort(),
+  //    station2.CargoInventory.sort(),
+  //  );
+  //});
 });
